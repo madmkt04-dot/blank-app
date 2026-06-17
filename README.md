@@ -1,37 +1,41 @@
-# MIS Costos Flexografía
+# MIS Costos Flexografia
 
-Aplicativo MVP en Streamlit para estimación de costos, pricing y gestión presupuestal de órdenes flexográficas.
+Aplicativo MVP en Streamlit para estimacion de costos, pricing, gestion presupuestal y analisis con IA para ordenes flexograficas.
 
 ## Objetivo
 
-Construir un módulo inicial tipo MIS/ERP para cotizar productos flexográficos por orden de trabajo, separando costos técnicos, costos comerciales y estrategias de precio.
+Construir un modulo inicial tipo MIS/ERP para cotizar productos flexograficos por orden de trabajo, separando costos tecnicos, costos comerciales, estrategias de precio y recomendaciones gerenciales con IA.
 
-## Módulos incluidos
+## Modulos incluidos
 
 - Datos de OP: producto, cliente, cantidad, avance, carriles y ancho de bobina.
 - Materiales: sustrato, tinta y barniz.
-- Producción: merma, velocidad, set up, horas máquina y mano de obra.
-- Costos fijos de OP: clisé, preprensa y preparación.
+- Produccion: merma, velocidad, set up, horas maquina y mano de obra.
+- Costos fijos de OP: clise, preprensa y preparacion.
 - Acabados: troquelado, rebobinado y empaque.
-- Costos indirectos: CIF aplicado, administración, ventas, comisión, flete y costo financiero.
-- Pricing: precio mínimo, precio por markup, precio técnico por margen sobre venta y precio estratégico por valor.
+- Costos indirectos: CIF aplicado, administracion, ventas, comision, flete y costo financiero.
+- Pricing: precio minimo, precio por markup, precio tecnico por margen sobre venta y precio estrategico por valor.
 - Sensibilidad: escenarios de material, merma, tiraje, velocidad, set up y margen.
+- Copiloto IA: explicacion de la cotizacion, alertas de rentabilidad, recomendacion de precio y decision sugerida.
 
-## Fórmulas principales
+## Integracion IA
+
+El archivo `ai_copilot.py` agrega un copiloto de costos flexograficos. La IA recibe el contexto de la cotizacion calculada y puede responder preguntas como:
 
 ```text
-Metros lineales netos = Cantidad × Avance / Carriles
-Metros lineales totales = Metros netos + Merma arranque + Merma corrida
-Área m² = Metros totales × Ancho bobina
-Costo sustrato = Área m² × Costo m²
-Costo tinta = Área m² × Consumo g/m² × Costo kg / 1000
-Horas corrida = Metros totales / Velocidad mL/h
-Costo máquina = (Horas set up + Horas corrida) × Tarifa máquina
-Costo total = Fabricación + Comercial
-Precio por margen sobre venta = Costo total / (1 - Margen objetivo)
+Analiza esta cotizacion y dime si conviene aceptarla, negociarla o recalcularla.
+Por que esta OP salio cara?
+Que pasa si reduzco set up o merma?
+Cual es el mayor riesgo de rentabilidad?
 ```
 
-## Cómo ejecutarlo
+La IA no reemplaza el motor de calculo. El calculo oficial lo realiza `pricing_engine.py`; el copiloto interpreta, explica y recomienda.
+
+## Configuracion
+
+Puedes configurar la clave mediante variable de entorno `OPENAI_API_KEY` y opcionalmente el modelo mediante `OPENAI_MODEL`. Si no configuras clave, el sistema sigue funcionando con recomendaciones por reglas internas.
+
+## Como ejecutarlo
 
 ```bash
 pip install -r requirements.txt
@@ -41,16 +45,8 @@ streamlit run streamlit_app.py
 ## Estructura
 
 ```text
-streamlit_app.py      Interfaz MIS para cotización y escenarios
-pricing_engine.py     Motor de cálculo de costos y pricing flexográfico
+streamlit_app.py      Interfaz MIS para cotizacion, escenarios y copiloto IA
+pricing_engine.py     Motor de calculo de costos y pricing flexografico
+ai_copilot.py         Modulo de IA para analisis gerencial de cotizaciones
 requirements.txt      Dependencias del MVP
 ```
-
-## Próximos módulos sugeridos
-
-1. Base de datos de clientes, materiales, máquinas y tarifas.
-2. Historial de cotizaciones por cliente y producto.
-3. Aprobación de descuentos y márgenes mínimos.
-4. Comparativo presupuesto vs real por OP.
-5. Exportación de cotización a PDF/Excel.
-6. Dashboard de rentabilidad por cliente, máquina, familia y vendedor.
